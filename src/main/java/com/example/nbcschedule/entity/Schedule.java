@@ -1,5 +1,6 @@
 package com.example.nbcschedule.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,15 +16,16 @@ public class Schedule {
     @Setter private LocalDateTime createdDate;
     @Setter private LocalDateTime updatedDate;
 
-    public Schedule(String task,
-                    String name,
-                    String password,
-                    LocalDateTime createdDate,
-                    LocalDateTime updatedDate)
+    public Schedule(
+            Long id,
+            String task,
+            String name,
+            LocalDateTime createdDate,
+            LocalDateTime updatedDate)
     {
+        this.id = id;
         this.task = task;
         this.name = name;
-        this.password = password;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }
