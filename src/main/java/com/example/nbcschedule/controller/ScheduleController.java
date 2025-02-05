@@ -28,4 +28,12 @@ public class ScheduleController {
     public ResponseEntity<List<ScheduleResponseDto>> findAll() {
         return ResponseEntity.ok(scheduleService.findAll());
     }
+
+    // 선택 일정 조회
+    @GetMapping("/schedules/{id}")
+    public ResponseEntity<ScheduleResponseDto> selectById(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(scheduleService.findById(id));
+    }
 }
