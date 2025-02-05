@@ -29,4 +29,14 @@ public class Schedule {
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }
+    // Save시 필요한 생성자
+    public Schedule(
+            String task,
+            String name,
+            String password
+    ) {
+        this.task = task;
+        this.name = name;
+        this.password = password;
+    }
 }
