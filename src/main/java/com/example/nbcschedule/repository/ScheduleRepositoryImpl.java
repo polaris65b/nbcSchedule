@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepositroy {
         schedule.setCreateDate(now);
         schedule.setUpdateDate(now);
 
-        String sql = "INSERT INTO schedule (task, member_id, created_at, updated_at) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO schedule (task, member_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, schedule.getTask());
@@ -47,14 +48,39 @@ public class ScheduleRepositoryImpl implements ScheduleRepositroy {
         return schedule;
     }
 
+    // Lv 1전체 일정 조회
     @Override
     public List<Schedule> findAll() {
-        return List.of();
+        StringBuilder sql = new StringBuilder("SELECT id, task, member_id, created_at, updated_at FROM schedule WHERE 1 = 1");
+        List<Object> params = new ArrayList<>();
+
+        sql.append("ORDER BY updated_at DESC");
+
+        return jdbcTemplate.query(
+                sql.toString(),
+                (rs, rowNum) -> new Schedule(
+                        rs.getLong("id"),
+                        rs.getString("task"),
+                        rs.getString("member_name"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("update_at").toLocalDateTime()
+                ),
+                params.toArray(new Object[0])
+        );
     }
 
+    // Lv 1선택 일정 조회
     @Override
     public Optional<Schedule> findById(Long id) {
-        return Optional.empty();
+        String sql = "SELECT id, task, member_id, created_at, updated_at FROM schedule WHERE id = ?";
+        List<Schedule> list = jdbcTemplate.query(sql, (rs, rowNum) -> new Schedule(
+                rs.getLong("id"),
+                rs.getString("task"),
+                rs.getString("member_name"),
+                rs.getTimestamp("created_at").toLocalDateTime(),
+                rs.getTimestamp("update_at").toLocalDateTime()
+        ), id);
+        return list.stream().findAny();
     }
 
     @Override
