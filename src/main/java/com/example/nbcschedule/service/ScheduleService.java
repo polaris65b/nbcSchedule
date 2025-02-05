@@ -6,13 +6,16 @@ import com.example.nbcschedule.entity.Schedule;
 import com.example.nbcschedule.repository.ScheduleRepositroy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
 
     private final ScheduleRepositroy scheduleRepositroy;
+
     // 일정 생성
+    @Transactional
     public ScheduleResponseDto save(ScheduleRequestDto dto){
         Schedule schedule = new Schedule(
                 dto.getTask(),
