@@ -1,18 +1,19 @@
 package com.example.nbcschedule.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 public class Schedule {
 
-    private Long id;
+    @Setter private Long id;
     private String task;
     private String name;
     private String password;
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
+    @Setter private LocalDateTime createdDate;
+    @Setter private LocalDateTime updatedDate;
 
     public Schedule(String task,
                     String name,
