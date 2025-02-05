@@ -11,6 +11,6 @@ public interface ScheduleRepositroy {
     List<Schedule> findAll();
     Optional<Schedule> findById(Long id);
 
-    // Lv 2 Delete
+    // Lv 2 Delete & Update
     void deleteById(Long id);
 }
