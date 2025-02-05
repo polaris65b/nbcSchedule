@@ -11,32 +11,32 @@ public class Schedule {
 
     @Setter private Long id;
     private String task;
-    private String name;
     private String password;
+    private String Name;
     @Setter private LocalDateTime createdDate;
     @Setter private LocalDateTime updatedDate;
 
-    public Schedule(
-            Long id,
-            String task,
-            String name,
-            LocalDateTime createdDate,
-            LocalDateTime updatedDate)
-    {
+    public Schedule(String task, String password, String Name) {
+        this.task = task;
+        this.password = password;
+        this.Name = Name;
+    }
+
+    public Schedule(Long id,
+                    String task,
+                    String Name,
+                    LocalDateTime createdDate,
+                    LocalDateTime updatedDate
+    ) {
         this.id = id;
         this.task = task;
-        this.name = name;
+        this.Name = Name;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }
-    // Save시 필요한 생성자
-    public Schedule(
-            String task,
-            String name,
-            String password
-    ) {
+
+    public void update(String task, String memberName ) {
         this.task = task;
-        this.name = name;
-        this.password = password;
+        this.Name = memberName;
     }
 }

@@ -70,4 +70,39 @@ public class ScheduleService {
                 schedule.getUpdatedDate()
         );
     }
+
+    // 일정 수정
+    @Transactional
+    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto request) {
+        Schedule schedule = scheduleRepositroy.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("해당 id의 스케줄이 존재하지 않습니다.")
+        );
+        if (!schedule.getPassword().equals(request.getPassword())) {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
+
+        schedule.update(request.getTask(), request.getName());
+        Schedule updatedSchedule = scheduleRepositroy.update(schedule);
+
+        return new ScheduleResponseDto(
+                updatedSchedule.getId(),
+                updatedSchedule.getTask(),
+                updatedSchedule.getName(),
+                updatedSchedule.getCreatedDate(),
+                updatedSchedule.getUpdatedDate()
+        );
+    }
+
+    // 일정 삭제
+    @Transactional
+    public void deleteSchedule(Long id, String password) {
+        Schedule schedule = scheduleRepositroy.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("해당 id의 스케줄이 존재하지 않습니다.")
+        );
+
+        if (!schedule.getPassword().equals(password)) {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
+        scheduleRepositroy.deleteById(id);
+    }
 }

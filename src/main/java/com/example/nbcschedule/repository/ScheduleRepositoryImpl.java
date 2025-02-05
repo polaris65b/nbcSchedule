@@ -30,8 +30,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepositroy {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         LocalDateTime now = LocalDateTime.now();
-        schedule.setCreateDate(now);
-        schedule.setUpdateDate(now);
+        schedule.setCreatedDate(now);
+        schedule.setUpdatedDate(now);
 
         String sql = "INSERT INTO schedule (task, member_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(connection -> {
@@ -85,11 +85,14 @@ public class ScheduleRepositoryImpl implements ScheduleRepositroy {
 
     @Override
     public Schedule update(Schedule schedule) {
-        return null;
+        String sql = "UPDATE schedule SET task = ?, member_name = ? WHERE id = ?";
+        jdbcTemplate.update(sql, schedule.getTask(), schedule.getName(), schedule.getId());
+        return findById(schedule.getId()).orElseThrow(() -> new IllegalStateException("일정 수정 후 조회 실패"));
     }
 
     @Override
     public void deleteById(Long id) {
-
+        String sql = "DELETE FROM schedule WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 }
