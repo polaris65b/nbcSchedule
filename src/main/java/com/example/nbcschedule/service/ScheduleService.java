@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +38,7 @@ public class ScheduleService {
     }
 
     // 전체 일정 조회
+    @Transactional(readOnly = true)
     public List<ScheduleResponseDto> findAll(){
         List<Schedule> schedules = scheduleRepositroy.findAll();
 
@@ -52,5 +54,20 @@ public class ScheduleService {
             dtos.add(dto);
         }
         return dtos;
+    }
+
+    // 선택 조회
+    public ScheduleResponseDto findById(Long id){
+        Schedule schedule = scheduleRepositroy.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException("Schedule이 없습니다.")
+        );
+
+        return new ScheduleResponseDto(
+                schedule.getId(),
+                schedule.getTask(),
+                schedule.getName(),
+                schedule.getCreatedDate(),
+                schedule.getUpdatedDate()
+        );
     }
 }
